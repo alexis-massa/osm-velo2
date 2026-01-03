@@ -100,7 +100,7 @@ DATABASES = {
         'USER': "coocyclette",
         "PASSWORD": os.environ.get("PASSE_DB"),
         "HOST": "localhost",
-        "PORT": '',
+        "PORT": '5432',
     }
 }
 
