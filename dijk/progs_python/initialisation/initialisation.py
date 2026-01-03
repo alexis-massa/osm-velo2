@@ -17,12 +17,12 @@ from dijk.progs_python.params import RACINE_PROJET
 from dijk.progs_python.quadrarbres import QuadrArbreArête
 from django.db import close_old_connections, transaction
 from django.db.models import Count
-from graphe_par_networkx import Graphe_nx
-from lecture_adresse.normalisation import (arbre_rue_dune_ville, normalise_rue,
+from ..graphe_par_networkx import Graphe_nx
+from ..lecture_adresse.normalisation import (arbre_rue_dune_ville, normalise_rue,
                                            partie_commune, prétraitement_rue)
-from petites_fonctions import LOG, chrono, paires, supprime_objets_par_lots
+from ..petites_fonctions import LOG, chrono, paires, supprime_objets_par_lots
 
-from initialisation.noeuds_des_rues import extrait_nœuds_des_rues
+from ..initialisation.noeuds_des_rues import extrait_nœuds_des_rues
 
 #############################################################################
 ### Fonctions pour (ré)initialiser ou ajouter une nouvelle ville ou zone. ###
@@ -245,11 +245,13 @@ def ajoute_ville(nom: str, code: int, nom_zone: str, force=False, pays="France",
     quadArbresArêtesDeLaBase()
 
 
-def charge_ville(ville_d, zone_d,
-                 force=False,
-                 rajouter_les_lieux=True,
-                 pays="France", bavard=2, rapide=0
-                 ):
+def charge_ville(
+        ville_d:mo.Ville,
+        zone_d: mo.Zone,
+        force=False,
+        rajouter_les_lieux=True,
+        pays="France", bavard=2, rapide=0
+):
     """
     Entrées :
     Effet :
@@ -280,7 +282,8 @@ def charge_ville(ville_d, zone_d,
         rel.save()
 
     modif = False
-    
+
+    breakpoint()
     if not ville_d.données_présentes or force:
         # création et enregistrement du graphe de la ville
         charge_graphe_de_ville(ville_d, pays=pays, bavard=bavard-1, rapide=rapide)
@@ -392,8 +395,8 @@ def crée_zone(liste_villes_str, zone: str,
               réinit_zone=False,
               effacer_cache=False, bavard=2, rapide=0,
               force_lieux=False,
-              inclue_dans: str = None,
-              contient: str = None
+              inclue_dans: str|None = None,
+              contient: str|None = None
               ):
     """
     Entrée : liste_villes, itérable de (nom de ville, code postal). La ville par défaut sera la première de cette liste.
